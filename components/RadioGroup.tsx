@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
-import {srOnlyStyles} from '../shared/styles'
+import {Button, srOnlyStyles} from '../shared/styles'
 
 type Option = {
   label: string
@@ -24,8 +24,9 @@ const RadioGroup: React.FC<RadioGroupProps> = props => {
 
   return (
     <RadioContainer>
+      <legend>{name}</legend>
       {options.map((option: Option) => (
-        <RadioItem as={'label'} key={`${name}-${option.value}`}>
+        <Radio key={`${name}-${option.value}`}>
           <input
             type="radio"
             name={name}
@@ -33,49 +34,37 @@ const RadioGroup: React.FC<RadioGroupProps> = props => {
             defaultChecked={defaultValue === option.value}
             onChange={handleChange}
           />
-          <span>{option.label}</span>
-        </RadioItem>
+          <Button as={'span'}>{option.label}</Button>
+        </Radio>
       ))}
     </RadioContainer>
   )
 }
 
-const Button = styled.button`
-  display: inline-flex;
-  min-width: 120px;
-  cursor: pointer;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  font-size: 16px;
-  font-weight: normal;
-  text-align: center;
-
-  span {
-    display: inline-block;
-    width: 100%;
-    padding: 8px 16px;
-    background-color: white;
-    color: black;
-    border-radius: 8px;
-  }
-
-  input[type='radio']:checked + span {
-    background-color: black;
-    color: white;
-  }
-
+const Radio = styled.label`
   input {
     ${srOnlyStyles}
   }
+
+  input[type='radio']:checked + ${Button} {
+    background-color: var(--color-gray);
+    color: var(--color-white);
+    box-shadow: none;
+  }
+
+  input[type='radio']:focus-visible + ${Button} {
+    outline: 3px solid rgba(131, 192, 253, 0.5);
+  }
 `
 
-const RadioContainer = styled.div`
+const RadioContainer = styled.fieldset`
   display: grid;
   gap: 10px;
-`
+  border: 0;
 
-const RadioItem = styled(Button)`
-  display: flex;
+  legend {
+    ${srOnlyStyles}
+  }
 `
 
 export default RadioGroup
